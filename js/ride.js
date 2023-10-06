@@ -1,4 +1,5 @@
 /*global WildRydes _config*/
+//comment
 
 var WildRydes = window.WildRydes || {}
 WildRydes.map = WildRydes.map || {}

@@ -38,20 +38,31 @@ WildRydes.map = WildRydes.map || {};
         });
     }
 
-    function completeRequest(result) {
-        var unicorn;
-        var pronoun;
-        console.log('Response received from API: ', result);
-        unicorn = result.Unicorn;
-        pronoun = unicorn.Gender === 'Male' ? 'his' : 'her';
-        displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
-        animateArrival(function animateCallback() {
-            displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
-            WildRydes.map.unsetLocation();
-            $('#request').prop('disabled', 'disabled');
-            $('#request').text('Set Pickup');
-        });
-    }
+ function completeRequest(result) {
+   if (result && result.Unicorn && result.Unicorn.Gender) {
+     var unicorn = result.Unicorn
+     var pronoun = unicorn.Gender === "Male" ? "his" : "her"
+     displayUpdate(
+       unicorn.Name +
+         ", your " +
+         unicorn.Color +
+         " unicorn, is on " +
+         pronoun +
+         " way."
+     )
+     animateArrival(function animateCallback() {
+       displayUpdate(unicorn.Name + " has arrived. Giddy up!")
+       WildRydes.map.unsetLocation()
+       $("#request").prop("disabled", "disabled")
+       $("#request").text("Set Pickup")
+     })
+   } else {
+     // Handle the case where the API response is missing data
+     console.error("Invalid API response:", result)
+     // Display an error message to the user or take appropriate action.
+   }
+ }
+
 
     // Register click handler for #request button
     $(function onDocReady() {
